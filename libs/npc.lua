@@ -8,6 +8,8 @@ local tooltipChanger = require("diject.mwse_libs.tooltipChanger")
 
 local this = {}
 
+this.npcTemplate = "rotf_dpl_"
+
 ---@param from tes3reference
 ---@param to tes3reference
 function this.transferStats(from, to)
@@ -65,7 +67,7 @@ function this.createDuplicate(actorData, params)
     local objConfig = params.spawnConfig
     if not params.customActorId then
         local raceId = actorData.race:lower()
-        local objPrefix = "rotf_dpl_"..(actorData.isFemale and "f_" or "m_")
+        local objPrefix = this.npcTemplate..(actorData.isFemale and "f_" or "m_")
         objId = objPrefix..raceId
         obj = tes3.getObject(objId)
         if not obj then
@@ -83,6 +85,10 @@ function this.createDuplicate(actorData, params)
             orientation = params.rotation or tes3vector3.new(actorData.rotation.x, actorData.rotation.y, actorData.rotation.z),
             cell = cell
         }
+        local randomizer = include("Morrowind_World_Randomizer.Randomizer")
+        if randomizer then
+            randomizer.StopRandomization(newRef)
+        end
 
         bodypartChanger.saveBodyParts(newRef, actorData.raceData, {head = actorData.head, hair = actorData.hair})
         tooltipChanger.saveTooltip(newRef, actorData.name..(actorData.deathCount > 0 and " The "..tostring(actorData.deathCount + 1).."th" or ""))

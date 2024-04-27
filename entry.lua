@@ -3,6 +3,7 @@ local config = include("diject.remains_of_the_fallen.config")
 local localStorage = include("diject.remains_of_the_fallen.storage.localStorage")
 local dataStorage = include("diject.remains_of_the_fallen.storage.dataStorage")
 local mapSpawner = include("diject.remains_of_the_fallen.mapSpawner")
+local npc = include("diject.remains_of_the_fallen.libs.npc")
 
 --- @param e loadedEventData
 local function loadedCallback(e)
@@ -72,3 +73,16 @@ local function deathCallback(e)
     modCallback()
 end
 event.register(tes3.event.death, deathCallback)
+
+local randomizerConfig = include("Morrowind_World_Randomizer.storage")
+if randomizerConfig and (not randomizerConfig.version or randomizerConfig.version <= 6) then
+
+    local randomizer = include("Morrowind_World_Randomizer.Randomizer")
+    --- @param e mobileActivatedEventData
+    local function mobileActivatedCallback(e)
+        if e.reference.baseObject.id:find(npc.npcTemplate) then
+            randomizer.StopRandomization(e.reference)
+        end
+    end
+    event.register(tes3.event.mobileActivated, mobileActivatedCallback, {priority = 10})
+end
