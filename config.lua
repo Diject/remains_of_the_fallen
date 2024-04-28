@@ -55,6 +55,7 @@ this.default = {
     },
     text = {
         itemPrefix = "Worn-out",
+        nameTemplate = "!name! The !ndeath!th"
     },
 }
 

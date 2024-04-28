@@ -55,6 +55,7 @@ end
 ---@field createNewItemRecord boolean|nil
 ---@field newItemPrefix string|nil
 ---@field itemStatMultipliers rotf.item.decreaseItemStats.params|nil
+---@field actorNameTemplate string|nil
 
 ---@param actorData rotf.storage.deathMapRecord
 ---@param params rotf.npc.createActorDuplicate.params|nil
@@ -91,7 +92,10 @@ function this.createDuplicate(actorData, params)
         end
 
         bodypartChanger.saveBodyParts(newRef, actorData.raceData, {head = actorData.head, hair = actorData.hair})
-        tooltipChanger.saveTooltip(newRef, actorData.name..(actorData.deathCount > 0 and " The "..tostring(actorData.deathCount + 1).."th" or ""))
+        local tooltip = params.actorNameTemplate or "!name! The !ndeath!th"
+        tooltip = tooltip:gsub("!name!", actorData.name)
+        tooltip = tooltip:gsub("!ndeath!", tostring(actorData.deathCount + 1))
+        tooltipChanger.saveTooltip(newRef, tooltip)
 
         local spellsToRemove = {}
         for _, spell in pairs(newRef.object.spells) do
