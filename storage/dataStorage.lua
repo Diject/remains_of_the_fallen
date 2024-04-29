@@ -111,7 +111,8 @@ local function serializeActor(playerId, actor, cell, position, orientation, deat
 
     for _, stack in pairs(object.inventory) do
         local item = stack.object
-        if allowedItemTypes[item.objectType] and (item.objectType ~= tes3.objectType.book or item.enchantment) and
+        if allowedItemTypes[item.objectType] and item.weight and item.weight > 0 and
+                (item.objectType ~= tes3.objectType.book or item.enchantment) and
                 not boundItems[item.id] and not (item.script and item.script ~= "") then
             local count = stack.count
             local addedToEquipmentTable = false
