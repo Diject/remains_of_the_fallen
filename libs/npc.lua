@@ -228,11 +228,15 @@ function this.createDuplicate(actorData, params)
             ::continue::
         end
 
-        local transferOtherEquipnemtCount = math.ceil(params.transferConfig.equipment / 100 * #otherEquipnemtItems)
-        local transferEquippedCount = math.ceil(params.transferConfig.equipedItems / 100 * #equipped)
-        local transferMagicItemsCount = math.ceil(params.transferConfig.magicItems / 100 * #magicItems)
-        local transferBooksCount = math.ceil(params.transferConfig.books / 100 * #books)
-        local transferMiscCount = math.ceil(params.transferConfig.misc / 100 * #miscItems)
+        local function calcNumber(val, maxVal)
+            return params.transferConfig.inPersent and math.ceil(val / 100 * maxVal) or val
+        end
+
+        local transferOtherEquipnemtCount = calcNumber(params.transferConfig.equipment, #otherEquipnemtItems)
+        local transferEquippedCount = calcNumber(params.transferConfig.equipedItems, #equipped)
+        local transferMagicItemsCount = calcNumber(params.transferConfig.magicItems,  #magicItems)
+        local transferBooksCount = calcNumber(params.transferConfig.books, #books)
+        local transferMiscCount = calcNumber(params.transferConfig.misc, #miscItems)
         local struct = {
             {transferOtherEquipnemtCount, otherEquipnemtItems},
             {transferEquippedCount, advTable.deepcopy(equipped)},
