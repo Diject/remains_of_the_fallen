@@ -381,6 +381,14 @@ function this.registerModConfig()
 
     local mapPage = template:createPage{label = "Main"}
     createLabel{self = mapPage, label = "The settings related to spawning characters from other playthroughs", labelColor = tes3.palette.headerColor}
+    createLabel{self = mapPage, label = "All the settings will be either local (individual for the character) "..
+        "or global (will apply by default to each player character unless the setting has become local). "..
+        "Local settings will be highlighted in yellow. "..
+        "If you are ingame, any settings you change will become local. "..
+        "If you want to reset a setting to global, hold down the shift key and change that setting. "..
+        "If you want to set global value of the setting, hold down the alt key. "..
+        "If you want to reset/set global on all settings from a tab, select this tab, hold down shift/alt and change the tab."
+    }
 
     createYesNo{self = mapPage, config = {path = "map", name = "enabled"}, label = "Spawn died characters from other playthroughs"}
     createNumberEdit{self = mapPage, config = {path = "map.spawn", name = "count"}, label = "Number of attempts to spawn a character per cell (0 - disabled)", limits = {min = 0}}
