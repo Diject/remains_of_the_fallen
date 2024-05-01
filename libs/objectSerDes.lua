@@ -38,7 +38,7 @@ end
 local varNames = {["id"]=true, ["objectType"]=true, ["enchantCapacity"]=true, ["armorRating"]=true, ["maxCondition"]=true,
     ["quality"]=true, ["speed"]=true, ["weight"]=true, ["chopMin"]=true, ["chopMax"]=true,["slashMin"]=true, ["slashMax"]=true,
     ["thrustMin"]=true, ["thrustMax"]=true, ["mesh"]=true, ["castType"]=true, ["chargeCost"]=true, ["maxCharge"]=true,
-    ["time"]=true, ["name"]=true, ["slot"]=true, ["skillId"] = true, ["magickaCost"]=true, ["icon"]=true,}
+    ["time"]=true, ["name"]=true, ["slot"]=true, ["skill"] = true, ["magickaCost"]=true, ["icon"]=true,}
 local ingrVarNames = {["effects"]=true, ["effectAttributeIds"]=true, ["effectSkillIds"]=true,}
 
 ---@return table|nil
