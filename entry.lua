@@ -30,7 +30,7 @@ event.register(tes3.event.save, saveCallback)
 --- @param e cellActivatedEventData
 local function cellActivatedCallback(e)
     if not localStorage.isReady() or not config.data.map.enabled then return end
-    local spawner = mapSpawner:new(e.cell, config.localConfig.id, localStorage.data)
+    local spawner = mapSpawner:new(e.cell, config.localConfig.id, localStorage.data, config.data.map.spawn.playerCount)
 
     local cellInfo = spawner:getCellLocalInfo()
     if cellInfo.lastSpawnTimestamp and cellInfo.lastSpawnTimestamp + config.data.map.spawn.interval > tes3.getSimulationTimestamp() then return end

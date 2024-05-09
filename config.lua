@@ -2,22 +2,23 @@ local advTable = include("diject.remains_of_the_fallen.utils.table")
 local localStorage = include("diject.remains_of_the_fallen.storage.localStorage")
 local log = include("diject.remains_of_the_fallen.utils.log")
 
-local globalStorageName = "JustAnIncarnateByDiject_Config"
+local globalStorageName = "RemainsOfTheFallen_Config"
 local localStorageName = "localConfig"
 local version = 0
 
 local this = {}
 
----@class config.globalData
+---@class rotf.config.globalData
 this.default = {
     map = {
         enabled = true,
-        ---@class jai.config.mapSpawn
+        ---@class rotf.config.mapSpawn
         spawn = {
             interval = 72, -- game hours
             chance = 25,
-            count = 2,
-            maxCount = 2,
+            count = 1,
+            maxCount = 1,
+            playerCount = 5,
             items = {
                 change = {
                     enbaled = true,
@@ -30,9 +31,9 @@ this.default = {
                 equipment = 100,
                 equipedItems = 100,
                 magicItems = 100,
-                misc = 100,
-                goldPercent = 20,
-                books = 100,
+                misc = 0,
+                goldPercent = 2,
+                books = 0,
             },
             body = {
                 chance = 100,
@@ -60,10 +61,10 @@ this.default = {
     },
 }
 
----@class config.globalData
+---@class rotf.config.globalData
 this.data = advTable.deepcopy(this.default)
 
----@class config.globalData
+---@class rotf.config.globalData
 this.global = advTable.deepcopy(this.default)
 
 do
@@ -77,15 +78,16 @@ do
     end
 end
 
----@class config.localData
+---@class rotf.config.localData
 this.localDefault = {
     version = version,
     count = 0, -- number of deaths
     id = nil,
     config = {},
+    spawnedPlayers = {},
 }
 
----@class config.localData
+---@class rotf.config.localData
 this.localConfig = advTable.deepcopy(this.localDefault)
 
 

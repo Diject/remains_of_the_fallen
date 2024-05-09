@@ -395,6 +395,7 @@ function this.registerModConfig()
     createNumberEdit{self = mapPage, config = {path = "map.spawn", name = "chance"}, label = "Chance to spawn per each attempt", limits = {min = 0, max = 100}}
     createNumberEdit{self = mapPage, config = {path = "map.spawn", name = "interval"}, label = "Interval in game hours between attempts", limits = {min = 0}}
     createNumberEdit{self = mapPage, config = {path = "map.spawn", name = "maxCount"}, label = "Maximum number of spawned characters per cell", limits = {min = 0}}
+    createNumberEdit{self = mapPage, config = {path = "map.spawn", name = "playerCount"}, label = "Maximum number of spawned characters from same playthrough", limits = {min = 0}}
 
     local itemGroup = mapPage:createCategory{label = "Inventory of the spawned characters"}
     createYesNo{self = itemGroup, config = {path = "map.spawn.items.change", name = "enbaled"}, label = "Recreate items in the inventory of a created character with unique ids. It will prevent quest abuse"}
@@ -402,7 +403,6 @@ function this.registerModConfig()
     createNumberEdit{self = itemGroup, config = {path = "map.spawn.items.change", name = "costMul"}, label = "Multiplier for the value of these recreated items", limits = {min = 0, max = 1}}
 
     local bodyGroup = mapPage:createCategory{label = "Copy of the character"}
-    local spawnBody = createNumberEdit{self = bodyGroup, config = {path = "map.spawn.body", name = "chance"}, label = "Chance in % to create a copy of the player after death. If the copy is alive, it will be transparent", limits = {min = 0, max = 100}, maxForLinkedGroup = 100}
     createNumberEdit{self = bodyGroup, config = {path = "map.spawn.body", name = "chanceToCorpse"}, label = "Chance in % to kill the copy (it will spawn as a dead)", limits = {min = 0, max = 100}}
     createNumberEdit{self = bodyGroup, config = {path = "map.spawn.body.stats", name = "health"}, label = "Health multiplier (in %) for the copy", limits = {min = 0}}
     createNumberEdit{self = bodyGroup, config = {path = "map.spawn.body.stats", name = "fatigue"}, label = "Fatigue multiplier (in %) for the copy", limits = {min = 0}}
@@ -423,8 +423,8 @@ function this.registerModConfig()
     createNumberEdit{self = transferGroup, config = {path = "map.spawn.transfer", name = "equipedItems"}, label = "Transfer this number or % of equipped items", limits = {min = 0, max = 100}}
     createNumberEdit{self = transferGroup, config = {path = "map.spawn.transfer", name = "equipment"}, label = "Transfer this number or % of items that you can equip but are currently unequipped", limits = {min = 0, max = 100}}
     createNumberEdit{self = transferGroup, config = {path = "map.spawn.transfer", name = "magicItems"}, label = "Transfer this number or % of items like scrolls or potions", limits = {min = 0, max = 100}}
-    createNumberEdit{self = transferGroup, config = {path = "map.spawn.transfer", name = "misc"}, label = "Transfer this number or % of miscellaneous items", limits = {min = 0, max = 100}}
-    createNumberEdit{self = transferGroup, config = {path = "map.spawn.transfer", name = "books"}, label = "Transfer this number or % of books", limits = {min = 0, max = 100}}
+    -- createNumberEdit{self = transferGroup, config = {path = "map.spawn.transfer", name = "misc"}, label = "Transfer this number or % of miscellaneous items", limits = {min = 0, max = 100}}
+    -- createNumberEdit{self = transferGroup, config = {path = "map.spawn.transfer", name = "books"}, label = "Transfer this number or % of books", limits = {min = 0, max = 100}}
     createNumberEdit{self = transferGroup, config = {path = "map.spawn.transfer", name = "goldPercent"}, label = "Transfer this % of gold", limits = {min = 0, max = 100}}
 
     -- template:register()

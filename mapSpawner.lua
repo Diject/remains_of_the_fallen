@@ -3,13 +3,14 @@ local dataStorage = include("diject.remains_of_the_fallen.storage.dataStorage")
 local stringLib = include("diject.remains_of_the_fallen.utils.string")
 
 local mapStorageLabel = "map"
+local aboutSpawnedPlayersInfoLabel = "spawnedPlayers"
 
 ---@class rotf.mapSpawner
 local this = {}
 
 ---@param cell tes3cell
 ---@param playerId string
-function this:new(cell, playerId, localStorageData)
+function this:new(cell, playerId, localStorageData, maxSpawnedForSinglePlayer)
     local out = {}
     setmetatable(out, self)
     self.__index = self
@@ -17,6 +18,7 @@ function this:new(cell, playerId, localStorageData)
     self.__playerId = playerId
     self.__playerData = localStorageData
     self.__cellInfo = nil
+    self.__maxSpawnedForSinglePlayer = maxSpawnedForSinglePlayer
     ---@type rotf.mapSpawner
     return out
 end
@@ -45,6 +47,18 @@ function this:getCellLocalInfo()
     return storage
 end
 
+function this:getSpawnedPlayersInfo()
+    local storage = self.__playerData[mapStorageLabel]
+    if not storage then
+        self.__playerData[mapStorageLabel] = {}
+        storage = self.__playerData[mapStorageLabel]
+    end
+    if not storage[aboutSpawnedPlayersInfoLabel] then
+        storage[aboutSpawnedPlayersInfoLabel] = {}
+    end
+    return storage[aboutSpawnedPlayersInfoLabel]
+end
+
 ---@class rotf.mapSpawner.spawn.params
 ---@field count integer
 ---@field maxCount integer
@@ -56,6 +70,7 @@ function this:spawn(params)
     local maxCount = params.maxCount
     local structure = dataStorage.loadDeathMapFileStructureForCell(self.__cell)
     local localInfo = self.__cellInfo or self:getCellLocalInfo()
+    local infoAboutPlayers = self:getSpawnedPlayersInfo()
 
     localInfo.lastSpawnTimestamp = tes3.getSimulationTimestamp()
     count = math.min(count, maxCount - localInfo.spawned.count)
@@ -63,7 +78,9 @@ function this:spawn(params)
 
     local matched = {}
     for playerId, data in pairs(structure) do
-        if playerId == self.__playerId then
+        local infoAboutPlayer = infoAboutPlayers[playerId]
+        local numberOfSpawnedForPlayer = infoAboutPlayer and (infoAboutPlayer.count or 0) or 0
+        if playerId == self.__playerId or numberOfSpawnedForPlayer >= self.__maxSpawnedForSinglePlayer then
             goto continue
         end
 
@@ -83,6 +100,10 @@ function this:spawn(params)
         npc.createDuplicate(actorData, params.actorParams)
         localInfo.spawned[actorData.recordId] = true
         localInfo.spawned.count = localInfo.spawned.count + 1
+        if not infoAboutPlayers[actorData.playerId] then
+            infoAboutPlayers[actorData.playerId] = {}
+        end
+        infoAboutPlayers[actorData.playerId].count = (infoAboutPlayers[actorData.playerId].count or 0) + 1
         count = count - 1
         table.remove(matched, actorPos)
     end
