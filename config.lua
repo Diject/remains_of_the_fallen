@@ -32,7 +32,7 @@ this.default = {
                 equipedItems = 100,
                 magicItems = 100,
                 misc = 0,
-                goldPercent = 2,
+                goldPercent = 0,
                 books = 0,
             },
             body = {
