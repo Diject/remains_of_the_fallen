@@ -425,7 +425,7 @@ function this.registerModConfig()
     createNumberEdit{self = transferGroup, config = {path = "map.spawn.transfer", name = "magicItems"}, label = "Transfer this number or % of items like scrolls or potions", limits = {min = 0, max = 100}}
     -- createNumberEdit{self = transferGroup, config = {path = "map.spawn.transfer", name = "misc"}, label = "Transfer this number or % of miscellaneous items", limits = {min = 0, max = 100}}
     -- createNumberEdit{self = transferGroup, config = {path = "map.spawn.transfer", name = "books"}, label = "Transfer this number or % of books", limits = {min = 0, max = 100}}
-    createNumberEdit{self = transferGroup, config = {path = "map.spawn.transfer", name = "goldPercent"}, label = "Transfer this % of gold", limits = {min = 0, max = 100}}
+    -- createNumberEdit{self = transferGroup, config = {path = "map.spawn.transfer", name = "goldPercent"}, label = "Transfer this % of gold", limits = {min = 0, max = 100}}
 
     -- template:register()
     this.modData = registerTemplate(template)
