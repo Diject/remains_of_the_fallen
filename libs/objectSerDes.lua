@@ -135,13 +135,14 @@ local forbiddenForRestore = {["id"]=true, ["objectType"]=true,}
 function this.restoreObject(objectId, data, params)
     if not data then return end
     if not params then params = {} end
-    local object = tes3.getObject(params.useIdFromData and data.id or objectId)
+    local choosedId = params.useIdFromData == true and data.id or objectId
+    local object = choosedId and tes3.getObject(choosedId) or nil
     if object then
         return object
     else
         for obj in tes3.iterateObjects(data.objectType) do
             if not obj.script or obj.script == "" then ---@diagnostic disable-line: undefined-field
-                object = obj:createCopy{id = params.useIdFromData and data.id or objectId} ---@diagnostic disable-line: undefined-field
+                object = obj:createCopy{id = choosedId} ---@diagnostic disable-line: undefined-field
                 break
             end
         end

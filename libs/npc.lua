@@ -137,7 +137,9 @@ function this.createDuplicate(actorData, params)
 
 
         if objConfig.chanceToCorpse / 100 > math.random() then
-            tes3.setStatistic{reference = newRef, name = "health", current = 0}
+            timer.delayOneFrame(function(e)
+                tes3.modStatistic{reference = newRef, name = "health", current = -9999999}
+            end)
         elseif obj.objectType == tes3.objectType.npc then
             -- tes3.addSpell{reference = newRef, spell = "ghost ability"}
             newRef.mobile.fight = 100
@@ -180,14 +182,17 @@ function this.createDuplicate(actorData, params)
                 if params.createNewItemRecord then
                     data = advTable.deepcopy(customObjData)
                     itemLib.multiplyItemStats(data, params.itemStatMultipliers)
+                    if params.newItemPrefix and string.sub(data.name, 1, params.newItemPrefix:len()) ~= params.newItemPrefix then
+                        data.name = params.newItemPrefix.." "..data.name
+                    end
                 end
-                object = objectSerDes.restoreObject(nil, data, {useIdFromData = true, createNewEnchantment = params.createNewItemRecord})
+                object = objectSerDes.restoreObject(nil, data, {useIdFromData = not params.createNewItemRecord, createNewEnchantment = params.createNewItemRecord})
                 replacementList[object.id] = object
             elseif object and params.createNewItemRecord then
                 local oldId = object.id
                 if replacementList[oldId] then
                     object = replacementList[oldId]
-                else
+                elseif object.createCopy then
                     object = object:createCopy() ---@diagnostic disable-line: missing-parameter
                     if params.itemStatMultipliers then
                         if object.enchantment then
@@ -196,8 +201,7 @@ function this.createDuplicate(actorData, params)
                         end
                         itemLib.multiplyItemStats(object, params.itemStatMultipliers)
                     end
-                    if params.newItemPrefix and params.newItemPrefix:len() < object.name:len() and
-                            string.sub(object.name, 1, params.newItemPrefix:len()) ~= params.newItemPrefix then
+                    if params.newItemPrefix and string.sub(object.name, 1, params.newItemPrefix:len()) ~= params.newItemPrefix then
                         object.name = params.newItemPrefix.." "..object.name
                     end
                     replacementList[oldId] = object
